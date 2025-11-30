@@ -41,26 +41,76 @@ def vertical_count(txt):
 vertical_count(array)
 
 # Diagonal instances - shift each row by one, then do vertical 
-def diagonal_count(txt, direction):
-    row_txt = txt[:len('XMAS')]
-    shifted_array = []
-    # while True:
-    if direction == 'R': # right diagonal
-        for i, row_txt in enumerate(txt):
-            row_shift = row_txt[i:]
-            shifted_array.append(row_shift)
-            vertical_count(shifted_array)
-            shifted_array = []
-    if direction == 'L': # left diagonal
-        for i, row_txt in enumerate(txt):
-            row_shift = row_txt[3 - i:]
-            shifted_array.append(row_shift)
-            vertical_count(shifted_array)
-            shifted_array = []
+# def diagonal_count(txt, direction):
+#     row_txt = txt[:len('XMAS')]
+#     shifted_array = []
+#     # while True:
+#     if direction == 'R': # right diagonal
+#         for i, row_txt in enumerate(txt):
+#             row_shift = row_txt[i:]
+#             shifted_array.append(row_shift)
+#             vertical_count(shifted_array)
+#             shifted_array = []
+#     if direction == 'L': # left diagonal
+#         for i, row_txt in enumerate(txt):
+#             row_shift = row_txt[3 - i:]
+#             shifted_array.append(row_shift)
+#             vertical_count(shifted_array)
+#             shifted_array = []
         
+# diagonal_count(array, 'R')
+# diagonal_count(array, 'L')
+
+# print(xmas_sum)
+# answer of 831 was too low
+# While loop in diagonal() led to infinite loop
+
+# Diagonal shift - move pos_idx window of text of interes for each row by 1 
+# going down depending if roated by right (top row doesn't move) or left (bottom
+# row doesn't move)
+
+def diagonal_count(txt, direction):
+    crop_array = []
+    row_idx = 0
+    for idx in range(len(txt)):
+        row_idx = idx
+        try:
+            # select 4 rows from overall array
+            crop_array = txt[row_idx : row_idx+len('XMAS')]
+            shift_array = []
+            if direction == 'R':
+                shift_array.append(crop_array[row_idx][row_idx : -len('XMAS')+1 + row_idx])
+                vertical_count(shift_array)
+            if direction == 'L':
+                shift_array.append(crop_array[row_idx][len('XMAS')-1 - row_idx : -len('XMAS')+1 + row_idx])
+                vertical_count(shift_array)
+        except:
+            break    
+        row_idx += 1
 diagonal_count(array, 'R')
 diagonal_count(array, 'L')
 
-print(xmas_sum)
-# answer of 831 was too low
-# While loop in diagonal() led to infinite loop
+# print(xmas_sum)
+
+# scratch code - find 'XMAS'
+ex_arr = ['XabSopfj', 'sMAffnvns', 'sMAdfofnsbne', 'XieSmvjbeufg', 'skdjfbso', 'fifififi', 'sdoivbwod']
+for i in range(len(ex_arr)):
+    print(ex_arr[i])
+print(' ')
+select_rows = []
+row_idx = 0
+while row_idx+len('XMAS') < len(ex_arr):
+    for i in range(len(ex_arr)):
+        row_idx = i
+        try:
+            select_rows = ex_arr[row_idx : row_idx+len('XMAS')] # need to make loop stop at 4 indx, not continue
+            # select_rows.append(row)
+            print(select_rows)
+        except:
+            break
+        row_idx += 1
+    # for i in range(5):
+    #     print(word[i:len(word)+i+1])
+
+word = 'abcdefg'
+print(word[:20])
