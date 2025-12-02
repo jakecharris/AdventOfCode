@@ -32,7 +32,7 @@ def vertical_count(txt):
     pos_idx = 0 # position index
     while True:
         try:
-            col_txt = ''.join([col[pos_idx] for col in txt])
+            col_txt = ''.join([row[pos_idx] for row in txt])
         except:
             break
         # check for 'XMAS' in column text, move to new column
@@ -69,48 +69,66 @@ vertical_count(array)
 # going down depending if roated by right (top row doesn't move) or left (bottom
 # row doesn't move)
 
-def diagonal_count(txt, direction):
-    crop_array = []
-    row_idx = 0
-    for idx in range(len(txt)):
-        row_idx = idx
-        try:
-            # select 4 rows from overall array
-            crop_array = txt[row_idx : row_idx+len('XMAS')]
-            shift_array = []
-            if direction == 'R':
-                shift_array.append(crop_array[row_idx][row_idx : -len('XMAS')+1 + row_idx])
-                vertical_count(shift_array)
-            if direction == 'L':
-                shift_array.append(crop_array[row_idx][len('XMAS')-1 - row_idx : -len('XMAS')+1 + row_idx])
-                vertical_count(shift_array)
-        except:
-            break    
-        row_idx += 1
-diagonal_count(array, 'R')
-diagonal_count(array, 'L')
+# def diagonal_count(txt, direction):
+#     crop_array = []
+#     row_idx = 0
+#     for idx in range(len(txt)):
+#         row_idx = idx
+#         try:
+#             # select 4 rows from overall array
+#             crop_array = txt[row_idx : row_idx+len('XMAS')]
+#             shift_array = []
+#             if direction == 'R':
+#                 shift_array.append(crop_array[row_idx][row_idx : -len('XMAS')+1 + row_idx])
+#                 vertical_count(shift_array)
+#             if direction == 'L':
+#                 shift_array.append(crop_array[row_idx][len('XMAS')-1 - row_idx : -len('XMAS')+1 + row_idx])
+#                 vertical_count(shift_array)
+#         except:
+#             break    
+#         row_idx += 1
 
 # print(xmas_sum)
 
 # scratch code - find 'XMAS'
 ex_arr = ['XabSopfj', 'sMAffnvns', 'sMAdfofnsbne', 'XieSmvjbeufg', 'skdjfbso', 'fifififi', 'sdoivbwod']
-for i in range(len(ex_arr)):
-    print(ex_arr[i])
-print(' ')
-select_rows = []
-row_idx = 0
-while row_idx+len('XMAS') < len(ex_arr):
-    for i in range(len(ex_arr)):
-        row_idx = i
+# for i in range(len(ex_arr)):
+#     print(ex_arr[i])
+# print(' ')
+def diag_ex(txt):
+    pos_idx = 0
+    while pos_idx <= len(txt)-len('XMAS'):
         try:
-            select_rows = ex_arr[row_idx : row_idx+len('XMAS')] # need to make loop stop at 4 indx, not continue
-            # select_rows.append(row)
-            print(select_rows)
+            crop_array = txt[pos_idx : pos_idx+len('XMAS')]
+            print('crop:', crop_array)
+            shift_rows_dwn = ''.join([crop_array[i][i] for i in range(len('XMAS'))])
+            shift_rows_up = ''.join([crop_array[i][i] for i in range(len('XMAS')-1, -1, -1)])
+            print('rows_dwn:', shift_rows_dwn)
+            print('rows_up:', shift_rows_up)
+            # shift_cols = ''.join([row[pos_idx] for row in crop_array])
+            # print('shift:', shift_cols)
         except:
             break
-        row_idx += 1
+        count_xmas(shift_rows_dwn)
+        count_xmas(shift_rows_up)
+        pos_idx += 1
+diag_ex(ex_arr)
+    
+print(xmas_sum)
+    
+    # while row_idx < len(ex_arr):
+    #     for i in range(len(ex_arr)):
+    #         row_idx = i
+    #         try:
+    #             row = ex_arr[row_idx][row_idx : row_idx+len('XMAS')] # need to make loop stop at 4 indx, not continue
+    #             # print(row)
+    #             select_rows.append(row)
+    #         except:
+    #             break
+    #         row_idx += 1
+    # return(select_rows)
+
     # for i in range(5):
     #     print(word[i:len(word)+i+1])
-
-word = 'abcdefg'
+word = 'abcd'
 print(word[:20])
