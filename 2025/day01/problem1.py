@@ -9,6 +9,8 @@ Problem 1.1: How many times while turning based on the instructions do you land
 exactly on 0?
 
 Problem 1.2: While turning the safe dial, how many times to you pass by 00?
+
+(Answer help from https://github.com/yolocheezwhiz/adventofcode/blob/main/2025/day01.py)
 '''
 
 # Open safe turn directions from input.txt
