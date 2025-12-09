@@ -33,32 +33,27 @@ Problem 3.2: Now, you want to increase the total output of the battery banks by
 turning on 12 of the highest joltage batteries from left to right. What is the
 new total joltage output?
 '''
-
-# every len(joltage) = 100, so need to drop 88 digits
-
-
-
-
-banks = [[int(n) for n in line] for line in open('input3.txt').read().strip().splitlines()]
-
-PICK = 12
-total = 0
-
-for bank in banks:
-    n = len(bank)
-    to_remove = n - PICK
-    stack = []
-    for battery in bank:
-        while stack and to_remove > 0 and stack[-1] < battery:
-            stack.pop()
-            to_remove -= 1
-        stack.append(battery)
-    if to_remove > 0:
-        stack = stack[:-to_remove]
-    joltages = stack[:PICK]
-    total += int("".join(map(str, joltages)))
-
-print(total)
-
-ex = [4]
-print(bool(ex))
+# Part 2: Combine largest 12 batteries from banks
+# Solution from @No_Mobile_8915 on Reddit 
+# (https://old.reddit.com/r/adventofcode/comments/1pcvaj4/2025_day_3_solutions/)
+def part2():
+    banks = [[int(n) for n in line] for line in open('input3.txt').read().strip().splitlines()]  # load each battery bank as individual ints
+    total_output = 0
+    for bank in banks:
+        to_remove = len(bank) - 12  # this example: remove 3 digits from each to reach 12 digits
+        stack = []  # First In Last Out 
+        for battery in bank:
+            # while digits can be removed and final digit is less than battery...
+            while stack and to_remove > 0 and stack[-1] < battery:
+                stack.pop()  # remove it from the stack
+                to_remove -= 1  # and lower needed digits to be removed
+            stack.append(battery)  # add digit to list; also initial condition as blank list is False
+        if to_remove > 0:  # if reach end and still have to_remove, exclude final n digits
+            stack = stack[:-to_remove]
+        jolt_digits = stack[:12]  # pick from only front 12 digits
+        output = int(''.join(map(str, jolt_digits)))
+        total_output += output
+    print(f'Answer part 2: {total_output}')
+    
+part2()  # Answer: 173848577117276
+    
