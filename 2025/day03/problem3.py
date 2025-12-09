@@ -13,7 +13,7 @@ of the resulting values from each bank to get a total maximum output joltage.
 '''
 
 # Open battery banks from input3.txt
-joltages = [line.strip() for line in open('input3.txt').readlines()]
+joltages = [line for line in open('input3.txt').read().strip().splitlines()]
 # print(f'Num. of joltages: {len(joltages)}')  # 200 joltages
 
 # Part 1: Combine largest two batteries from each bank
@@ -35,25 +35,30 @@ new total joltage output?
 '''
 
 # every len(joltage) = 100, so need to drop 88 digits
-def part2():
-    total_output = 0
-    for jolt in joltages:
-        bat_bank = ''
-        pos = 0
-        for i in range(12, 0, -1):
-            digit = max(jolt[pos:-i])
-            pos = jolt.find(digit, pos) + 1
-            # print(f'i {i}, Digit {digit}, Pos {pos}')
-            bat_bank += digit
-        
-        total_output += int(bat_bank)
-    
-    print(f'Answer part 2: {total_output}')
 
-# part2() # Answer: 
 
-print([i for i in range(11, 0, -1)])
-print([i for i in reversed(range(12))])
 
-n = '123'   
-print(n[2:-1])
+
+banks = [[int(n) for n in line] for line in open('input3.txt').read().strip().splitlines()]
+
+PICK = 12
+total = 0
+
+for bank in banks:
+    n = len(bank)
+    to_remove = n - PICK
+    stack = []
+    for battery in bank:
+        while stack and to_remove > 0 and stack[-1] < battery:
+            stack.pop()
+            to_remove -= 1
+        stack.append(battery)
+    if to_remove > 0:
+        stack = stack[:-to_remove]
+    joltages = stack[:PICK]
+    total += int("".join(map(str, joltages)))
+
+print(total)
+
+ex = [4]
+print(bool(ex))
