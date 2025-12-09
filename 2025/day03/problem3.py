@@ -1,0 +1,30 @@
+'''
+Day 3: Lobby (https://adventofcode.com/2025/day/3)
+
+You see a collection of banks of batteries. Each bank contains individual 
+joltage ratings between 1-9 for individual batteries. For example, a bank of 
+batteries labeled "123" has batteries with joltage ratings 1, 2, and 3. Turning
+on certain batteries can allow them to combine their joltages into a greater value.
+
+Problem 3.1: For each battery bank, turn on exactly two batteries which have the
+highest values to make a single highest combined value (e.g. 2 and 3 from 123 
+to make 23). Then, add up all of the resulting values from each bank to get a 
+total maximum output joltage.
+'''
+
+# Open battery banks from input3.txt
+joltages = [line.strip() for line in open('input3.txt').readlines()]
+# print(f'Num. of joltages: {len(joltages)}')  # 200 joltages
+
+# Part 1: Combine largest two batteries from each bank
+# Solution based on https://github.com/mgtezak/Advent_of_Code/blob/master/2025/03/p1.py
+def part1():
+    total_output = 0
+    for jolt in joltages:
+        n1 = max(jolt[:-1])
+        n2 = max(jolt[jolt.find(n1)+1:])
+        total_output += int(n1 + n2)
+    print(f'Answer part 1: {total_output}')
+
+part1()  # Answer: 17524
+
