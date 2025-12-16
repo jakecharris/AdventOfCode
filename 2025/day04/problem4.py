@@ -22,21 +22,79 @@ for i in range(len(array)):  # left/right
 
 # Go through array, search for '@' symbol, and count surrounding '@' 
 # symbols to check if fewer than 4
-total_accessible = 0
-for y in range(len(array)):  # 
-    for x in range(len(array[y])):
-        s = []  # symbols
-        if array[x][y] == '@':
-            s.append(array[x-1][y+1])
-            s.append(array[x][y+1])
-            s.append(array[x+1][y+1])
-            s.append(array[x-1][y])
-            s.append(array[x+1][y])
-            s.append(array[x-1][y-1])
-            s.append(array[x][y-1])
-            s.append(array[x+1][y-1])
-            total_accessible += 1 if s.count('@') < 4 else 0
-        else:
-            pass
-print(f'Answer part 1: {total_accessible}')  # Answer: 1480
+def total_accessible_part1() -> str:
+    global array
+    total_part1 = 0
+    for y in range(len(array)):  
+        for x in range(len(array[y])):
+            s = []  # symbols
+            if array[x][y] == '@':
+                s.append(array[x-1][y+1])
+                s.append(array[x][y+1])
+                s.append(array[x+1][y+1])
+                s.append(array[x-1][y])
+                s.append(array[x+1][y])
+                s.append(array[x-1][y-1])
+                s.append(array[x][y-1])
+                s.append(array[x+1][y-1])
+                total_part1 += 1 if s.count('@') < 4 else 0
+            else:
+                pass
+    return(f'Answer part 1: {total_part1}')  # Answer: 1480
+# print(total_accessible_part1())
 
+'''
+Problem 4.2: Now consider that as rolls of paper are removed, there will be new
+rolls of paper made accessible by the absence of the removed paper. With this in
+mind, how many rolls of paper will be removed from the stack before no more rolls
+can be removed?
+(https://adventofcode.com/2025/day/4#part2)
+'''
+
+# Problem 4.2 - removing and replacing paper rolls
+# same idea as before, but take note of which rolls are taken and replace character
+# do this for each round until no more rolls are accessible, return total
+
+
+# Same array search as before, but take note of accessible papers until 
+# no more papers are accessible
+def total_accessible_part2() -> str:
+    global array
+    total_part2 = 0
+    changed = True
+    to_replace = []
+    while changed:
+        for y in range(len(array)):
+            for x in range(len(array[y])):
+                s = []
+                # make list of symbols & x/y coordinates
+                if array[x][y] == '@':
+                    s.append([array[x-1][y+1], x-1, y+1])
+                    s.append([array[x][y+1], x, y+1])
+                    s.append([array[x+1][y+1], x+1, y+1])
+                    s.append([array[x-1][y], x-1, y])
+                    s.append([array[x+1][y], x+1, y])
+                    s.append([array[x-1][y-1], x-1, y-1])
+                    s.append([array[x][y-1], x, y-1])
+                    s.append([array[x+1][y-1], x+1, y-1])
+                    for i in range(len(s)):
+                        if s[i][0].count('@') < 4:
+                            total_part2 += 1
+                            to_replace.append([x, y]) # PROBLEM: appending too many times
+        
+        print(to_replace[:-10][10])
+        # end While loop if array didn't change
+        if len(to_replace) == 0:
+            changed = False
+            break
+        # replace '@' symbols using to_replace coordinates
+        else:
+            for i in to_replace:
+                a = i[0]
+                b = i[1] 
+                print(a, b)
+                array = array[a][b].replace('@', '.')  # PROBLEM - index out of range
+    
+    return(f'Answer part 2: {total_part2}')  # Answer: 
+
+print(total_accessible_part2())
