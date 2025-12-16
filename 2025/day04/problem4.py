@@ -62,11 +62,11 @@ def total_accessible_part2() -> str:
     global array
     total_part2 = 0
     changed = True
-    to_replace = []
     while changed:
         for y in range(len(array)):
             for x in range(len(array[y])):
                 s = []
+                to_replace = []
                 # make list of symbols & x/y coordinates
                 if array[x][y] == '@':
                     s.append([array[x-1][y+1], x-1, y+1])
@@ -77,24 +77,25 @@ def total_accessible_part2() -> str:
                     s.append([array[x-1][y-1], x-1, y-1])
                     s.append([array[x][y-1], x, y-1])
                     s.append([array[x+1][y-1], x+1, y-1])
-                    for i in range(len(s)):
-                        if s[i][0].count('@') < 4:
-                            total_part2 += 1
-                            to_replace.append([x, y]) # PROBLEM: appending too many times
-        
-        print(to_replace[:-10][10])
-        # end While loop if array didn't change
-        if len(to_replace) == 0:
-            changed = False
-            break
+                for i in range(len(s)):
+                    if s[i][0].count('@') < 4:
+                        total_part2 += 1
+                        to_replace.append([x, y]) # PROBLEM: appending too many times
         # replace '@' symbols using to_replace coordinates
-        else:
+        if len(to_replace) > 0:
             for i in to_replace:
                 a = i[0]
                 b = i[1] 
-                print(a, b)
+                # print(a, b)
                 array = array[a][b].replace('@', '.')  # PROBLEM - index out of range
+        # end While loop if array didn't change
+        else:
+            changed = False
+            break
+                
     
     return(f'Answer part 2: {total_part2}')  # Answer: 
 
 print(total_accessible_part2())
+
+print(len(array[0]))  # array size: 139 x 139
