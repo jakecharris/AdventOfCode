@@ -59,11 +59,9 @@ can be removed?
 # Same array search as before, but take note of accessible papers until 
 # no more papers are accessible
 def total_accessible_part2() -> str:
-    # global array
     total_part2 = 0
-    # changed = 
-    i = 0
-    while i < 1:
+    changed = True
+    while changed:
         to_replace = []
         for y in range(len(array)):
             for x in range(len(array[y])):
@@ -83,47 +81,38 @@ def total_accessible_part2() -> str:
                         total_part2 += 1
                 else:
                     continue
-        # to_replace = [list(i) for i in set(tuple(i) for i in to_replace)]
-        # print(len(to_replace))
-        # print(to_replace)
-        # replace '@' symbols using to_replace coordinates
+        
+        # replace '@' symbols with "." using to_replace coordinates
         if len(to_replace) > 0:
-            print(f'to_replace length: {len(to_replace)}')
-            print(to_replace[120][0])
-            # for i in range(len(to_replace)):
-            #     for j in range(len(to_replace[i])):
-            #         a = int(j[0])  # col
-            #         b = j[1]  # row
-            #     array[b] = array[b][:a] + '.' + array[b][a+1:]
-                # array = array[a][b].replace('@', '.')  # PROBLEM - index out of range
+            x = [i[0] for i in to_replace]
+            y = [i[1] for i in to_replace]
+            for (i, j) in zip(x, y):
+                row = array[i]
+                row = row[:j] + '.' + row[j+1:]
+                array[i] = row
         # end While loop if array didn't change
         else:
-            print('No more rolls - loop broken')
             changed = False
-        i += 1
             
-            
-    pass                   
     return(f'Answer part 2: {total_part2}')  # Answer: 
 
-# print(total_accessible_part2())
+print(total_accessible_part2())
 
 # print(array[137][1])  # array size: 139 x 139
 
 
-ex = ['abcd', 'efga', 'fgav', 'aafd']
-r = [[0,0], [1,3], [2,2], [3,0], [3,1]]
-a = [i[0] for i in r]
-b = [i[1] for i in r]
-new_words = []
-for (i,j) in zip(a,b):
-    new_word = list(ex[i])
-    new_word[j] = '@'
-    new_word = ''.join(new_word)
-    new_words.append(new_word)
-print(new_words)
-# for j in r:
-#     a, b = j[0], j[1]
-#     ex[a][b] = '@'
-    # ex = ex[a][b].replace('a', '@')
-print(ex)
+# ex = ['bacd', 'efga', 'fgav', 'caad']
+# r = [[0,1], [1,3], [2,2], [3,1], [3,2]]
+# a = [i[0] for i in r]
+# b = [i[1] for i in r]
+# new_words = []
+# for (i,j) in zip(a,b):
+#     word = ex[i]
+#     word = word[:j] + '@' + word[j+1:]  # SOLUTION?????
+#     ex[i] = word
+# print(ex)
+# # for j in r:
+# #     a, b = j[0], j[1]
+# #     ex[a][b] = '@'
+#     # ex = ex[a][b].replace('a', '@')
+# print(ex)
