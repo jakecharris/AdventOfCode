@@ -23,7 +23,6 @@ for i in range(len(array)):  # left/right
 # Go through array, search for '@' symbol, and count surrounding '@' 
 # symbols to check if fewer than 4
 def total_accessible_part1() -> str:
-    global array
     total_part1 = 0
     for y in range(len(array)):  
         for x in range(len(array[y])):
@@ -39,9 +38,10 @@ def total_accessible_part1() -> str:
                 s.append(array[x+1][y-1])
                 total_part1 += 1 if s.count('@') < 4 else 0
             else:
-                pass
+                continue
     return(f'Answer part 1: {total_part1}')  # Answer: 1480
 # print(total_accessible_part1())
+
 
 '''
 Problem 4.2: Now consider that as rolls of paper are removed, there will be new
@@ -59,43 +59,71 @@ can be removed?
 # Same array search as before, but take note of accessible papers until 
 # no more papers are accessible
 def total_accessible_part2() -> str:
-    global array
+    # global array
     total_part2 = 0
-    changed = True
-    while changed:
+    # changed = 
+    i = 0
+    while i < 1:
+        to_replace = []
         for y in range(len(array)):
             for x in range(len(array[y])):
-                s = []
-                to_replace = []
                 # make list of symbols & x/y coordinates
+                s = []
                 if array[x][y] == '@':
-                    s.append([array[x-1][y+1], x-1, y+1])
-                    s.append([array[x][y+1], x, y+1])
-                    s.append([array[x+1][y+1], x+1, y+1])
-                    s.append([array[x-1][y], x-1, y])
-                    s.append([array[x+1][y], x+1, y])
-                    s.append([array[x-1][y-1], x-1, y-1])
-                    s.append([array[x][y-1], x, y-1])
-                    s.append([array[x+1][y-1], x+1, y-1])
-                for i in range(len(s)):
-                    if s[i][0].count('@') < 4:
-                        total_part2 += 1
+                    s.append(array[x-1][y+1])
+                    s.append(array[x][y+1])
+                    s.append(array[x+1][y+1])
+                    s.append(array[x-1][y])
+                    s.append(array[x+1][y])
+                    s.append(array[x-1][y-1])
+                    s.append(array[x][y-1])
+                    s.append(array[x+1][y-1])
+                    if s.count('@') < 4:
                         to_replace.append([x, y]) # PROBLEM: appending too many times
+                        total_part2 += 1
+                else:
+                    continue
+        # to_replace = [list(i) for i in set(tuple(i) for i in to_replace)]
+        # print(len(to_replace))
+        # print(to_replace)
         # replace '@' symbols using to_replace coordinates
         if len(to_replace) > 0:
-            for i in to_replace:
-                a = i[0]
-                b = i[1] 
-                # print(a, b)
-                array = array[a][b].replace('@', '.')  # PROBLEM - index out of range
+            print(f'to_replace length: {len(to_replace)}')
+            print(to_replace[120][0])
+            # for i in range(len(to_replace)):
+            #     for j in range(len(to_replace[i])):
+            #         a = int(j[0])  # col
+            #         b = j[1]  # row
+            #     array[b] = array[b][:a] + '.' + array[b][a+1:]
+                # array = array[a][b].replace('@', '.')  # PROBLEM - index out of range
         # end While loop if array didn't change
         else:
+            print('No more rolls - loop broken')
             changed = False
-            break
-                
-    
+        i += 1
+            
+            
+    pass                   
     return(f'Answer part 2: {total_part2}')  # Answer: 
 
-print(total_accessible_part2())
+# print(total_accessible_part2())
 
-print(len(array[0]))  # array size: 139 x 139
+# print(array[137][1])  # array size: 139 x 139
+
+
+ex = ['abcd', 'efga', 'fgav', 'aafd']
+r = [[0,0], [1,3], [2,2], [3,0], [3,1]]
+a = [i[0] for i in r]
+b = [i[1] for i in r]
+new_words = []
+for (i,j) in zip(a,b):
+    new_word = list(ex[i])
+    new_word[j] = '@'
+    new_word = ''.join(new_word)
+    new_words.append(new_word)
+print(new_words)
+# for j in r:
+#     a, b = j[0], j[1]
+#     ex[a][b] = '@'
+    # ex = ex[a][b].replace('a', '@')
+print(ex)
