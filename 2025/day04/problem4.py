@@ -92,6 +92,6 @@ def total_accessible_part2() -> str:
         else:
             changed = False
             
-    return(f'Answer part 2: {total_part2}')  # Answer: 
+    return(f'Answer part 2: {total_part2}')  # Answer: 8899
 
 print(total_accessible_part2())
