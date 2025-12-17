@@ -39,8 +39,10 @@ def total_accessible_part1() -> str:
                 total_part1 += 1 if s.count('@') < 4 else 0
             else:
                 continue
+    
     return(f'Answer part 1: {total_part1}')  # Answer: 1480
-# print(total_accessible_part1())
+
+print(total_accessible_part1())
 
 
 '''
@@ -54,10 +56,6 @@ can be removed?
 # Problem 4.2 - removing and replacing paper rolls
 # same idea as before, but take note of which rolls are taken and replace character
 # do this for each round until no more rolls are accessible, return total
-
-
-# Same array search as before, but take note of accessible papers until 
-# no more papers are accessible
 def total_accessible_part2() -> str:
     total_part2 = 0
     changed = True
@@ -97,22 +95,3 @@ def total_accessible_part2() -> str:
     return(f'Answer part 2: {total_part2}')  # Answer: 
 
 print(total_accessible_part2())
-
-# print(array[137][1])  # array size: 139 x 139
-
-
-# ex = ['bacd', 'efga', 'fgav', 'caad']
-# r = [[0,1], [1,3], [2,2], [3,1], [3,2]]
-# a = [i[0] for i in r]
-# b = [i[1] for i in r]
-# new_words = []
-# for (i,j) in zip(a,b):
-#     word = ex[i]
-#     word = word[:j] + '@' + word[j+1:]  # SOLUTION?????
-#     ex[i] = word
-# print(ex)
-# # for j in r:
-# #     a, b = j[0], j[1]
-# #     ex[a][b] = '@'
-#     # ex = ex[a][b].replace('a', '@')
-# print(ex)
