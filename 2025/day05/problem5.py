@@ -15,30 +15,26 @@ many ingredients in the database are fresh?
 
 # load in file and split into 2 lists: ingredient ranges and inventory IDs
 file = [line for line in open('input5.txt').read().strip().splitlines()]
-id_ranges = []
+ing_ranges = []
 inv_ids = []
-for i in range(len(file)):
-    if '-' in file[i]:
-        nums = list(map(int, file[i].split('-')))
-        nums_range = [i for i in range(nums[0], nums[1] + 1)]
-        for n in nums_range:
-            id_ranges.append(n)
-    elif file[i] != '':
-        inv_ids.append(int(file[i]))
+for line in file:
+    if '-' in line:
+        nums = list(map(int, line.split('-')))
+        ing_ranges.append(nums)
+    elif line != '':
+        inv_ids.append(int(line))
     else:
         pass
-print(id_ranges)
+
+ing_num_ranges = [range(x, y+1) for x, y in ing_ranges]
+total_fresh = 0
+fresh_inv = set([i for i in inv_ids for r in ing_num_ranges if i in r])
+print(f'Answer part 1: {len(fresh_inv)}')  # Answer: 720
 
 
-def num_fresh():
-    pass
+'''
+Problem 5.2: Now, just consider the fresh ingredient ID ranges. Considering that
+many of the ranges overlap each other, how many unique fresh ingredient IDs are there?
+'''
 
-# ex = []
-# num = '12-15'
-# nums = list(map(int, num.split('-')))
-# print(nums)
-# nums_range = [i for i in range(nums[0], nums[1]+1)]
-# print(nums_range)
-# print(ex)
-# print(nums)
-# print(int(n) for n in range(nums[0], nums[1] + 1))
+# Problem 5.2: number of fresh ingredient IDs 
