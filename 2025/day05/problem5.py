@@ -26,9 +26,8 @@ for line in file:
     else:
         pass
 
-ing_num_ranges = [range(x, y+1) for x, y in ing_ranges]
-total_fresh = 0
-fresh_inv = set([i for i in inv_ids for r in ing_num_ranges if i in r])
+num_ranges = [range(x, y+1) for x, y in ing_ranges]
+fresh_inv = set([i for i in inv_ids for r in num_ranges if i in r])
 print(f'Answer part 1: {len(fresh_inv)}')  # Answer: 720
 
 
@@ -38,3 +37,17 @@ many of the ranges overlap each other, how many unique fresh ingredient IDs are 
 '''
 
 # Problem 5.2: number of fresh ingredient IDs 
+# combine overlapping inventory ranges 
+ing_ranges.sort(key=lambda x: x[0])
+
+i = 0
+while i < len(ing_ranges) - 1:
+    if ing_ranges[i][1] >= ing_ranges[i+1][0]:
+        ing_ranges[i][1] = max(ing_ranges[i][1], ing_ranges[i+1][1])
+        ing_ranges.pop(i+1)
+    else:
+        i += 1
+
+fresh_ranges = [(y+1) - x for x, y in ing_ranges]
+
+print(f'Answer part 2: {sum(fresh_ranges)}')  # Answer: 357608232770687
