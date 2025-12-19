@@ -31,4 +31,21 @@ while i < len(op_array):
     elif op_array[i] == '*':
         answer_part1 += math.prod(col)
     i += 1
-print(answer_part1)
+print(answer_part1)  # Answer: 4878670269096
+
+
+'''
+Problem 6.2: The provided columns of numbers are actually supposed to be read in a
+right-to-left manner with each digit in its own column and then read top-down.
+With this in mind and using the same operator rules as before, what is the new
+total of calculated digit columns?
+'''
+
+# Problem 6.2: R-to-L arranged column digits
+'''
+    1  2  3                             6  4
+       4  5  -> 356 * 24 * 1 = 8544     2  3    -> 4 + 431 + 623 = 1058
+          6                             3  1  4
+    *                                   +
+'''
+# need a way to determine if each num is right or left aligned
