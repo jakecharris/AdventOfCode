@@ -38,49 +38,67 @@ import re
     # change periods in rows below to | 
 
 # open lines of array file 
-array = [line for line in open('input7.txt').read().strip().splitlines()] 
-even_rows = [array[i] for i in range(len(array)) if i % 2 == 0]
-odd_rows = [array[i] for i in range(len(array)) if i % 2 != 0]
-
-print(all('^' in even_rows[i] for i in range(2, len(even_rows))))  # True
-print(any('^' in odd_rows[i] for i in range(len(odd_rows))))  # False
-
-print(even_rows[0].index('.'))  # S in row 0 at index 70
+read_array = [line for line in open('input7.txt').read().strip().splitlines()] 
+ex = 'abcdefg'
+ex_lst = list(ex)
+ex_lst[3] = '#'
+ex = ''.join(ex_lst)
+print(ex)
 
 # find indexes of chars using enumerate in a dict
 
 total_splits = 0
-i = 1
-for i in range(len(array)):
-    # dict of indexes of symbols in row
-    char_idx = {ele: [] for ele in array[i]}
-    for idx, ele in enumerate(array[i]):
-        char_idx[ele].append(idx)
+array = read_array
+# for i in range(len(array)-1):
+for i in range(0, 5):
+    # dicts of indexes of symbols in reference/next rows
+    ref_row = array[i]
+    # print(ref_row)
+    ref_idx = {ele: [] for ele in ref_row}
+    for idx, ele in enumerate(ref_row):
+        ref_idx[ele].append(idx)
+    next_row = array[i+1]
+    # print(next_row)
+    next_idx = {ele: [] for ele in next_row}
+    for idx, ele in enumerate(next_row):
+        next_idx[ele].append(idx)
     
-    for row in array:
-        # first beam symbol below 'S'
-        if ('S' in row[i]):
-            row_lst = list(array[i+1])
-            for j in char_idx['S']:
-                row_lst[j] = '|' 
-            ''.join(row_lst)
-        # split beams on either side of splitter
-        if ('^' in row[i]) and ('|' in row[i-1]):
-            
-            beam_lst = list(array[i-1])
-            split_lst = list(array[i])
-            for j in char_idx['|']:
-                split_lst[j-1] = '|' 
-                split_lst[j+1] = '|'
-            ''.join(row_lst)
-            
-            
-        else:
-            pass
-    
+    # first beam symbol below 'S'
+    if ('S' in ref_row):
+        next_lst = list(next_row)
+        for j in ref_idx['S']:
+            next_lst[j] = '|' 
+        next_row = ''.join(next_lst)
+    # extend existing beams into next_row
+    elif ('^' in ref_row) and ('|' in ref_row):
+        next_lst = list(next_row)
+        for j in ref_idx['|']:
+            next_lst[j] = '|'
+        next_row = ''.join(next_lst)
+    # split beams (or continue if not split)
+    elif ('|' in ref_row) and ('^' in next_row):
+        # look for equal idx in ref beams and next splits
+        beam_split_idx = list(set(ref_idx['|']) & set(next_idx['^']))
+        next_lst = list(next_row)
+        for j in beam_split_idx:
+            if j in ref_idx['|']:
+                next_lst[j-1] = '|'
+                next_lst[j+1] = '|'
+                total_splits += 1
+            # if ref beam but no next split, just extend beams
+            else:
+                next_lst[j] = '|'
+        next_row = ''.join(next_lst)
 
-# change '.' in row 1, index 70 below S to '|'  
-row1_lst = list(array[1])
-row1_lst[70] = '|'
-''.join(row1_lst)
+print(total_splits)
+
+'''
+row 0: S row, no changes
+row 1: change below S to beam
+row 2: first split, change .s on either side to beams
+row 3: change .s below beams to extend beams
+row 4: second split, change .s on either side to beams
+etc
+
+'''
 
