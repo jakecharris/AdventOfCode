@@ -39,29 +39,34 @@ import re
 
 # open lines of array file 
 read_array = [line for line in open('input7.txt').read().strip().splitlines()] 
-ex = 'abcdefg'
+ex = 'abcdcfg'
 ex_lst = list(ex)
-ex_lst[3] = '#'
+idx_dict = {'c': [2, 4]}
+for i in idx_dict['c']:
+    ex_lst[i] = '$'
 ex = ''.join(ex_lst)
 print(ex)
+
+
 
 # find indexes of chars using enumerate in a dict
 
 total_splits = 0
 array = read_array
 # for i in range(len(array)-1):
+# strings are immutable - need to convert lines to lists, then change
 for i in range(0, 5):
+    print(i)
     # dicts of indexes of symbols in reference/next rows
     ref_row = array[i]
-    # print(ref_row)
     ref_idx = {ele: [] for ele in ref_row}
     for idx, ele in enumerate(ref_row):
         ref_idx[ele].append(idx)
     next_row = array[i+1]
-    # print(next_row)
     next_idx = {ele: [] for ele in next_row}
     for idx, ele in enumerate(next_row):
         next_idx[ele].append(idx)
+    print(ref_row)
     
     # first beam symbol below 'S'
     if ('S' in ref_row):
@@ -89,8 +94,8 @@ for i in range(0, 5):
             else:
                 next_lst[j] = '|'
         next_row = ''.join(next_lst)
-
-print(total_splits)
+    
+    print(next_row)
 
 '''
 row 0: S row, no changes
